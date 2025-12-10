@@ -1,0 +1,18 @@
+
+# Build artifacts
+**/android/build/
+**/.cxx/
+godot-exports/
+
+# Large binaries
+*.so
+*.a
+*.xcframework
+*.xcarchive
+*.ipa
+*.apk
+*.aab
+
+# Keep specific files
+!ios/GodotTest.pck
+!ios/GodotTest2.pck
