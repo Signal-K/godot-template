@@ -3,6 +3,13 @@
 **/android/build/
 **/.cxx/
 godot-exports/
+android/app/build/
+build/
+ios/build/
+ios/Pods/Target Support Files/
+
+# Node modules
+node_modules/
 
 # Large binaries
 *.so
@@ -13,6 +20,6 @@ godot-exports/
 *.apk
 *.aab
 
-# Keep specific files
+## Keep specific files
 !ios/GodotTest.pck
-!ios/GodotTest2.pck
+

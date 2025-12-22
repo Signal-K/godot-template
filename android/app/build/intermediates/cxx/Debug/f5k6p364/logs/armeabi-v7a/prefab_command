@@ -15,7 +15,7 @@
   --ndk-version \
   28 \
   --output \
-  /var/folders/s4/5kv5bxw50kj3lw54ng0hj_600000gn/T/agp-prefab-staging5533584258568701067/staged-cli-output \
+  /var/folders/s4/5kv5bxw50kj3lw54ng0hj_600000gn/T/agp-prefab-staging13776736666208094845/staged-cli-output \
   /Users/scroobz/Navigation/Native/godot-template/android/app/build/intermediates/cxx/refs/borndotcom_react-native-godot/5p264n6n \
   /Users/scroobz/.gradle/caches/8.13/transforms/14a3878c2800f6eea79160815e4bc073/transformed/react-android-0.81.4-debug/prefab \
   /Users/scroobz/Navigation/Native/godot-template/android/app/build/intermediates/cxx/refs/react-native-worklets-core/3x2et664 \

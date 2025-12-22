@@ -14,7 +14,14 @@ import {
   runOnGodotThread,
 } from "@borndotcom/react-native-godot";
 import * as FileSystem from "expo-file-system/legacy";
-import { Button, StyleSheet, View, Platform } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  View,
+  Platform,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -87,20 +94,16 @@ function initGodot(name) {
     v.x = 1.0;
     v.y = 2.0;
     console.log("Godot Engine initialized:" + v.x + "," + v.y);
-    var engine = Godot.Engine;
     console.log("After Engine");
-    var sceneTree = engine.get_main_loop();
     console.log("After Main Loop");
-    var root = sceneTree.get_root();
-    console.log("After Get Root");
   });
 }
 
-function pauseGodot(ev: any) {
+function pauseGodot() {
   RTNGodot.pause();
 }
 
-function resumeGodot(ev: any) {
+function resumeGodot() {
   RTNGodot.resume();
 }
 
@@ -166,80 +169,53 @@ const App = () => {
     });
   };
 
-  const MainWindow = ({ navigation }) => {
+  const Loading = ({ navigation }) => {
     return (
-      <View style={styles.container}>
-        <View style={styles.buttonContainer}>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={styles.loadingText}>Loading...</Text>
+        <View style={styles.openButton}>
           <Button
-            title="Start 1"
+            title="Open Game"
             onPress={() => {
-              console.log("Starting Godot...");
-              initGodot("GodotTest");
+              navigation.navigate("Game");
             }}
           />
-          <Button
-            title="Start 2"
-            onPress={() => {
-              console.log("Starting Godot...");
-              initGodot("GodotTest2");
-            }}
-          />
-          <Button
-            title="Stop"
-            onPress={() => {
-              destroyGodot();
-            }}
-          />
-          <Button title="Pause" onPress={pauseGodot} />
-          <Button title="Resume" onPress={resumeGodot} />
-          <Button
-            title="Open Window"
-            onPress={() => {
-              navigation.navigate("SubWindow", {});
-            }}
-          />
-        </View>
-        <View style={styles.godotContainer}>
-          <RTNGodotView style={styles.godot} />
         </View>
       </View>
     );
   };
 
-  const SubWindow = ({ navigation, route }) => {
+  const Game = ({ navigation }) => {
     useEffect(() => {
-      openSubwindow();
+      // Initialize Godot when entering the Game screen
+      initGodot("GodotTest");
+
       return () => {
-        closeSubwindow();
+        // Destroy Godot when leaving the Game screen
+        destroyGodot();
       };
     }, []);
+
     return (
-      <View style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Close"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
-        </View>
-        <View style={styles.godotContainer}>
-          <RTNGodotView style={styles.godot} windowName="subwindow" />
-        </View>
+      <View style={styles.gameContainer}>
+        <RTNGodotView style={styles.fullscreenGodot} />
       </View>
     );
   };
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainWindow">
-        <Stack.Screen name="MainWindow" component={MainWindow} />
+      <Stack.Navigator initialRouteName="Loading">
         <Stack.Screen
-          name="SubWindow"
-          component={SubWindow}
-          options={{
-            headerBackVisible: false,
-          }}
+          name="Loading"
+          component={Loading}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Game"
+          component={Game}
+          options={{ headerShown: false, presentation: "modal" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -280,7 +256,7 @@ const styles = StyleSheet.create({
   },
   godotContainer: {
     flex: 8,
-    padding: 20,
+    padding: 0,
   },
   testContainer: {
     flex: 2,
@@ -291,6 +267,27 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     margin: 0,
+  },
+  fullscreenGodot: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+  },
+  openButton: {
+    marginTop: 16,
+    width: 160,
+  },
+  gameContainer: {
+    flex: 1,
+    backgroundColor: "black",
   },
 });
 
